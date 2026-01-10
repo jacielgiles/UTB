@@ -27,6 +27,17 @@ function initAuthForms() {
     }
 }
 
+// Función para generar hash de contraseña simple (para demo)
+function simpleHash(password) {
+    let hash = 0;
+    for (let i = 0; i < password.length; i++) {
+        const char = password.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash).toString(16);
+}
+
 // Manejar login
 function handleLogin(e) {
     e.preventDefault();
@@ -47,28 +58,69 @@ function handleLogin(e) {
     // Mostrar loading
     showAuthLoading('Iniciando sesión...');
     
-    // Simular autenticación (en producción sería una API)
-    setTimeout(() => {
-        if (email === 'admin@bustickets.com' && password === '123456') {
-            // Login exitoso
+    // Intentar login con la base de datos
+    loginUserInDatabase({
+        email: email,
+        password_hash: simpleHash(password)
+    });
+}
+
+// Login de usuario en la base de datos
+async function loginUserInDatabase(userData) {
+    try {
+        console.log('📡 Intentando login:', { email: userData.email });
+        
+        const requestData = {
+            action: 'login',
+            ...userData
+        };
+        
+        const response = await fetch(`${API_BASE_URL}/auth`, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(requestData)
+        });
+        
+        console.log('📊 Status de login:', response.status);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('✅ Login exitoso:', result);
+            
+            // Guardar datos del usuario en localStorage
             const userData = {
-                nombre: 'Administrador',
-                email: email,
+                id: result.user.id,
+                nombre: result.user.nombre,
+                email: result.user.email,
                 loginTime: new Date().toISOString()
             };
             
             localStorage.setItem('bustickets_user', JSON.stringify(userData));
-            showNotification(CONFIG.MESSAGES.SUCCESS.LOGIN, 'success');
+            showAuthSuccess('¡Bienvenido! Redirigiendo...');
             
             setTimeout(() => {
                 window.location.href = CONFIG.URLS.HOME;
             }, 1500);
         } else {
-            // Login fallido
-            showAuthError('Email o contraseña incorrectos');
+            const errorData = await response.json();
+            console.error('❌ Error de login:', errorData);
+            
+            if (response.status === 401) {
+                showAuthError('Email o contraseña incorrectos');
+            } else if (response.status === 423) {
+                showAuthError('Usuario bloqueado temporalmente. Intenta más tarde.');
+            } else if (response.status === 403) {
+                showAuthError('Usuario inactivo. Contacta al soporte.');
+            } else {
+                showAuthError('Error al iniciar sesión. Intenta nuevamente.');
+            }
             resetAuthButton();
         }
-    }, 2000);
+    } catch (error) {
+        console.error('❌ Error de conexión:', error);
+        showAuthError('Error de conexión. Intenta nuevamente.');
+        resetAuthButton();
+    }
 }
 
 // Manejar registro
@@ -147,7 +199,7 @@ function handleRegister(e) {
         email: email,
         telefono: telefono,
         fecha_nacimiento: fechaNacimiento,
-        password_hash: btoa(password), // En producción usar bcrypt
+        password_hash: simpleHash(password), // Usar hash simple en lugar de base64
         acepta_newsletter: newsletterValue
     });
 }
@@ -228,7 +280,7 @@ function registerUserLocally(userData) {
     existingUsers.push(newUser);
     localStorage.setItem('bustickets_users', JSON.stringify(existingUsers));
     
-    showAuthSuccess('¡Cuenta creada exitosamente! (Guardada localmente)');
+    showAuthSuccess('¡Cuenta creada exitosamente!');
     
     setTimeout(() => {
         window.location.href = 'login.html';
