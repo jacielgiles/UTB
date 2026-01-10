@@ -183,10 +183,60 @@
         </div>
     </div>
     
+    <script src="js/config.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/database-test.js"></script>
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
         checkUserSession();
+        
+        // Agregar botón de test de DB
+        const testButton = document.createElement('button');
+        testButton.innerHTML = '<i class="fas fa-database"></i> Test DB';
+        testButton.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #1a365d;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.3);
+            transition: all 0.3s ease;
+        `;
+        
+        testButton.addEventListener('click', () => {
+            console.clear();
+            console.log('🚀 Iniciando test manual de base de datos...');
+            
+            if (window.dbTest && window.dbTest.full) {
+                window.dbTest.full();
+            } else {
+                console.error('❌ dbTest no está disponible. Verifica que database-test.js se haya cargado correctamente.');
+                // Fallback: usar la función de test del main.js
+                if (window.testDatabaseConnection) {
+                    window.testDatabaseConnection();
+                } else {
+                    console.error('❌ Ninguna función de test está disponible.');
+                }
+            }
+        });
+        
+        testButton.addEventListener('mouseenter', () => {
+            testButton.style.background = '#2c5282';
+            testButton.style.transform = 'translateY(-2px)';
+        });
+        
+        testButton.addEventListener('mouseleave', () => {
+            testButton.style.background = '#1a365d';
+            testButton.style.transform = 'translateY(0)';
+        });
+        
+        document.body.appendChild(testButton);
     </script>
 </body>
 </html>

@@ -5,6 +5,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initFormValidation();
 });
 
+// Configuración de la API (usando CONFIG)
+const API_BASE_URL = getApiUrl();
+
+// Headers para autenticación
+function getAuthHeaders() {
+    return CONFIG.API.HEADERS;
+}
+
 // Inicializar formularios de autenticación
 function initAuthForms() {
     const loginForm = document.querySelector('#loginForm');
@@ -50,10 +58,10 @@ function handleLogin(e) {
             };
             
             localStorage.setItem('bustickets_user', JSON.stringify(userData));
-            showNotification('¡Bienvenido! Redirigiendo...', 'success');
+            showNotification(CONFIG.MESSAGES.SUCCESS.LOGIN, 'success');
             
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = CONFIG.URLS.HOME;
             }, 1500);
         } else {
             // Login fallido
@@ -68,33 +76,60 @@ function handleRegister(e) {
     e.preventDefault();
     
     const form = e.target;
-    const nombre = form.querySelector('input[name="nombre"]').value;
-    const email = form.querySelector('input[name="email"]').value;
-    const telefono = form.querySelector('input[name="telefono"]').value;
+    const nombre = form.querySelector('input[name="nombre"]').value.trim();
+    const email = form.querySelector('input[name="email"]').value.trim();
+    const telefono = form.querySelector('input[name="telefono"]').value.trim();
+    const fechaNacimiento = form.querySelector('input[name="fecha_nacimiento"]').value;
     const password = form.querySelector('input[name="password"]').value;
     const confirmPassword = form.querySelector('input[name="confirm_password"]').value;
     const terms = form.querySelector('input[name="terms"]').checked;
+    const privacy = form.querySelector('input[name="privacy"]').checked;
+    const newsletter = form.querySelector('input[name="newsletter"]').checked;
     
     let errors = [];
     
-    if (!nombre || !email || !password || !confirmPassword) {
-        errors.push('Todos los campos son obligatorios');
+    // Validaciones básicas
+    if (!nombre || !email || !telefono || !fechaNacimiento || !password || !confirmPassword) {
+        errors.push(CONFIG.MESSAGES.ERROR.REQUIRED_FIELDS);
     }
     
+    // Validar nombre (mínimo 2 palabras)
+    if (nombre && nombre.split(' ').length < 2) {
+        errors.push('Ingresa tu nombre completo (nombre y apellido)');
+    }
+    
+    // Validar email
     if (!isValidEmail(email)) {
-        errors.push('Por favor ingresa un email válido');
+        errors.push(CONFIG.MESSAGES.ERROR.INVALID_EMAIL);
     }
     
-    if (password.length < 6) {
-        errors.push('La contraseña debe tener al menos 6 caracteres');
+    // Validar teléfono (10 dígitos)
+    if (!isValidPhone(telefono)) {
+        errors.push(CONFIG.MESSAGES.ERROR.INVALID_PHONE);
     }
     
+    // Validar edad (mayor de 18 años)
+    if (fechaNacimiento && !isValidAge(fechaNacimiento)) {
+        errors.push(CONFIG.MESSAGES.ERROR.MIN_AGE);
+    }
+    
+    // Validar contraseña fuerte
+    if (password && !isStrongPassword(password)) {
+        errors.push('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número');
+    }
+    
+    // Validar confirmación de contraseña
     if (password !== confirmPassword) {
-        errors.push('Las contraseñas no coinciden');
+        errors.push(CONFIG.MESSAGES.ERROR.PASSWORD_MISMATCH);
     }
     
+    // Validar términos y privacidad
     if (!terms) {
         errors.push('Debes aceptar los términos y condiciones');
+    }
+    
+    if (!privacy) {
+        errors.push('Debes aceptar la política de privacidad');
     }
     
     if (errors.length > 0) {
@@ -105,35 +140,95 @@ function handleRegister(e) {
     // Mostrar loading
     showAuthLoading('Creando cuenta...');
     
-    // Simular registro (en producción sería una API)
-    setTimeout(() => {
-        // Verificar si el email ya existe
-        const existingUsers = JSON.parse(localStorage.getItem('bustickets_users') || '[]');
-        const emailExists = existingUsers.some(user => user.email === email);
+    // Intentar registrar en la base de datos real
+    registerUserInDatabase({
+        nombre: nombre,
+        email: email,
+        telefono: telefono,
+        fecha_nacimiento: fechaNacimiento,
+        password_hash: btoa(password), // En producción usar bcrypt
+        acepta_newsletter: newsletter
+    });
+}
+
+// Registrar usuario en la base de datos real
+async function registerUserInDatabase(userData) {
+    try {
+        console.log('📡 Enviando datos a Neon API:', userData);
         
-        if (emailExists) {
-            showAuthError('Este email ya está registrado');
+        const response = await fetch(`${API_BASE_URL}/users`, {
+            method: 'POST',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(userData)
+        });
+        
+        console.log('📊 Status de respuesta:', response.status);
+        
+        if (response.ok) {
+            const result = await response.json();
+            console.log('✅ Usuario registrado en la base de datos:', result);
+            showAuthSuccess('¡Cuenta creada exitosamente en la base de datos! Ya puedes iniciar sesión.');
+            
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        } else {
+            const errorText = await response.text();
+            console.error('❌ Error de la API:', errorText);
+            
+            if (response.status === 401) {
+                showAuthError('Error de autenticación. Verifica la configuración del API Key.');
+            } else if (response.status === 409) {
+                showAuthError('Este email ya está registrado');
+            } else if (response.status === 400) {
+                showAuthError('Datos inválidos. Verifica que todos los campos estén correctos.');
+            } else {
+                showAuthError('Error al crear la cuenta. Intenta nuevamente.');
+            }
             resetAuthButton();
-            return;
         }
-        
-        // Crear nuevo usuario
-        const newUser = {
-            id: Date.now(),
-            nombre: nombre,
-            email: email,
-            telefono: telefono,
-            registrationDate: new Date().toISOString()
-        };
-        
-        existingUsers.push(newUser);
-        localStorage.setItem('bustickets_users', JSON.stringify(existingUsers));
-        
-        showAuthSuccess('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
-        
-        setTimeout(() => {
-            window.location.href = 'login.html';
-        }, 2000);
+    } catch (error) {
+        console.error('❌ Error de conexión:', error);
+        showAuthError('Error de conexión. Guardando localmente como respaldo...');
+        // Fallback a localStorage si no hay conexión
+        registerUserLocally(userData);
+    }
+}
+
+// Fallback: registrar localmente si no hay conexión a la DB
+function registerUserLocally(userData) {
+    const existingUsers = JSON.parse(localStorage.getItem('bustickets_users') || '[]');
+    const emailExists = existingUsers.some(user => user.email === userData.email);
+    const phoneExists = existingUsers.some(user => user.telefono === userData.telefono);
+    
+    if (emailExists) {
+        showAuthError('Este email ya está registrado');
+        resetAuthButton();
+        return;
+    }
+    
+    if (phoneExists) {
+        showAuthError('Este teléfono ya está registrado');
+        resetAuthButton();
+        return;
+    }
+    
+    // Crear nuevo usuario localmente
+    const newUser = {
+        id: Date.now(),
+        ...userData,
+        registrationDate: new Date().toISOString(),
+        activo: true,
+        rol: 'cliente'
+    };
+    
+    existingUsers.push(newUser);
+    localStorage.setItem('bustickets_users', JSON.stringify(existingUsers));
+    
+    showAuthSuccess('¡Cuenta creada exitosamente! (Guardada localmente)');
+    
+    setTimeout(() => {
+        window.location.href = 'login.html';
     }, 2000);
 }
 
@@ -208,9 +303,9 @@ function validateField(field) {
             break;
             
         case 'password':
-            if (value && value.length < 6) {
+            if (value && value.length < 8) {
                 isValid = false;
-                message = 'Mínimo 6 caracteres';
+                message = 'Mínimo 8 caracteres';
             }
             break;
             
@@ -223,9 +318,16 @@ function validateField(field) {
             break;
             
         case 'nombre':
-            if (value && value.length < 2) {
+            if (value && value.split(' ').length < 2) {
                 isValid = false;
-                message = 'Nombre muy corto';
+                message = 'Ingresa nombre completo';
+            }
+            break;
+            
+        case 'telefono':
+            if (value && !/^[0-9]{10}$/.test(value)) {
+                isValid = false;
+                message = 'Debe tener 10 dígitos';
             }
             break;
     }
@@ -262,7 +364,7 @@ function showFieldError(field, message) {
 
 // Limpiar error de campo
 function clearFieldError(field) {
-    field.style.borderColor = '#e1e8ed';
+    field.style.borderColor = '#e2e8f0';
     
     const existingError = field.parentNode.querySelector('.field-error');
     if (existingError) {
@@ -284,9 +386,9 @@ function showAuthError(message) {
         <span>${message}</span>
     `;
     errorDiv.style.cssText = `
-        background-color: #fee;
+        background-color: #fed7d7;
         color: #c53030;
-        border: 1px solid #fed7d7;
+        border: 1px solid #feb2b2;
         padding: 1rem;
         border-radius: 8px;
         margin-bottom: 1.5rem;
@@ -309,6 +411,37 @@ function showAuthError(message) {
     }, 5000);
 }
 
+// Mostrar mensaje de éxito
+function showAuthSuccess(message) {
+    const existingError = document.querySelector('.auth-error');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    const successDiv = document.createElement('div');
+    successDiv.className = 'auth-success';
+    successDiv.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+    `;
+    successDiv.style.cssText = `
+        background-color: #c6f6d5;
+        color: #38a169;
+        border: 1px solid #9ae6b4;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        font-weight: 500;
+        animation: slideDown 0.5s ease-in-out;
+    `;
+    
+    const form = document.querySelector('.auth-form');
+    form.insertBefore(successDiv, form.firstChild);
+}
+
 // Mostrar loading
 function showAuthLoading(message) {
     const submitBtn = document.querySelector('.btn-auth');
@@ -321,10 +454,38 @@ function showAuthLoading(message) {
     }
 }
 
+// Resetear botón de autenticación
+function resetAuthButton() {
+    const submitBtn = document.querySelector('.btn-auth');
+    if (submitBtn) {
+        submitBtn.disabled = false;
+        if (document.querySelector('#loginForm')) {
+            submitBtn.innerHTML = `
+                <i class="fas fa-sign-in-alt"></i>
+                Iniciar Sesión
+            `;
+        } else {
+            submitBtn.innerHTML = `
+                <i class="fas fa-user-plus"></i>
+                Crear Cuenta
+            `;
+        }
+    }
+}
+
 // Validar email
 function isValidEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
+}
+
+// Función global para mostrar notificaciones
+function showNotification(message, type = 'info') {
+    if (window.BusTickets && window.BusTickets.showNotification) {
+        window.BusTickets.showNotification(message, type);
+    } else {
+        alert(message);
+    }
 }
 
 // Agregar estilos de animación
@@ -341,70 +502,6 @@ authStyle.textContent = `
         to { opacity: 0; }
     }
     
-    .fa-spinner {
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-`;
-document.head.appendChild(authStyle);
-//
- Mostrar mensaje de éxito
-function showAuthSuccess(message) {
-    const existingError = document.querySelector('.auth-error');
-    if (existingError) {
-        existingError.remove();
-    }
-    
-    const successDiv = document.createElement('div');
-    successDiv.className = 'auth-success';
-    successDiv.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-    `;
-    successDiv.style.cssText = `
-        background-color: #f0fff4;
-        color: #38a169;
-        border: 1px solid #c6f6d5;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1.5rem;
-        display: flex;
-        align-items: flex-start;
-        gap: 0.5rem;
-        font-weight: 500;
-        animation: slideDown 0.5s ease-in-out;
-    `;
-    
-    const form = document.querySelector('.auth-form');
-    form.insertBefore(successDiv, form.firstChild);
-}
-
-// Resetear botón de autenticación
-function resetAuthButton() {
-    const submitBtn = document.querySelector('.btn-auth');
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        if (submitBtn.id === 'loginBtn' || document.querySelector('#loginForm')) {
-            submitBtn.innerHTML = `
-                <i class="fas fa-sign-in-alt"></i>
-                Iniciar Sesión
-            `;
-        } else {
-            submitBtn.innerHTML = `
-                <i class="fas fa-user-plus"></i>
-                Crear Cuenta
-            `;
-        }
-    }
-}
-
-// Agregar animación adicional
-const additionalStyle = document.createElement('style');
-additionalStyle.textContent = `
     @keyframes slideDown {
         from {
             opacity: 0;
@@ -415,5 +512,14 @@ additionalStyle.textContent = `
             transform: translateY(0);
         }
     }
+    
+    .fa-spinner {
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
 `;
-document.head.appendChild(additionalStyle);
+document.head.appendChild(authStyle);

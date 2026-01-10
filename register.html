@@ -72,7 +72,7 @@
                             <i class="fas fa-user"></i> Nombre Completo
                         </label>
                         <input type="text" id="nombre" name="nombre" required 
-                               placeholder="Tu nombre completo">
+                               placeholder="Tu nombre completo" minlength="2">
                     </div>
                     
                     <div class="form-group">
@@ -87,8 +87,15 @@
                         <label for="telefono">
                             <i class="fas fa-phone"></i> Teléfono
                         </label>
-                        <input type="tel" id="telefono" name="telefono" 
-                               placeholder="123-456-7890">
+                        <input type="tel" id="telefono" name="telefono" required
+                               placeholder="10 dígitos (ej: 5512345678)" pattern="[0-9]{10}" maxlength="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fecha_nacimiento">
+                            <i class="fas fa-calendar"></i> Fecha de Nacimiento
+                        </label>
+                        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
                     </div>
                     
                     <div class="form-group">
@@ -96,7 +103,10 @@
                             <i class="fas fa-lock"></i> Contraseña
                         </label>
                         <input type="password" id="password" name="password" required 
-                               placeholder="Mínimo 6 caracteres">
+                               placeholder="Mínimo 8 caracteres" minlength="8">
+                        <small style="color: #666; font-size: 0.8rem;">
+                            Debe contener al menos 8 caracteres, una mayúscula, una minúscula y un número
+                        </small>
                     </div>
                     
                     <div class="form-group">
@@ -111,7 +121,19 @@
                         <label class="checkbox-label">
                             <input type="checkbox" name="terms" required>
                             <span class="checkmark"></span>
-                            Acepto los <a href="terminos.html">términos y condiciones</a>
+                            Acepto los <a href="#terms" target="_blank">términos y condiciones</a>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="privacy" required>
+                            <span class="checkmark"></span>
+                            Acepto la <a href="#privacy" target="_blank">política de privacidad</a>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="newsletter">
+                            <span class="checkmark"></span>
+                            Quiero recibir ofertas y promociones por email
                         </label>
                     </div>
                     
@@ -176,6 +198,7 @@
             <p>&copy; <span id="currentYear"></span> BusTickets. Todos los derechos reservados.</p>
         </div>
     </footer>
+    <script src="js/config.js"></script>
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
     <script>
