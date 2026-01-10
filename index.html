@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusTickets - Venta de Boletos de Autobús</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="index.html">
+                        <i class="fas fa-bus"></i>
+                        <span>BusTickets</span>
+                    </a>
+                </div>
+                
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#rutas" class="nav-link">
+                            <i class="fas fa-route"></i> Rutas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#horarios" class="nav-link">
+                            <i class="fas fa-clock"></i> Horarios
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contacto" class="nav-link">
+                            <i class="fas fa-phone"></i> Contacto
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="nav-auth">
+                    <div class="user-menu" id="userMenu" style="display: none;">
+                        <span class="user-name">
+                            <i class="fas fa-user"></i> 
+                            <span id="userName"></span>
+                        </span>
+                        <a href="#" class="btn-logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </a>
+                    </div>
+                    <div class="auth-buttons" id="authButtons">
+                        <button class="user-icon-btn" onclick="openAuthModal()">
+                            <i class="fas fa-user"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        <section class="hero">
+            <div class="hero-content">
+                <h1><i class="fas fa-bus"></i> Viaja Cómodo y Seguro</h1>
+                <p>Encuentra los mejores boletos de autobús para tu próximo destino</p>
+                <div class="search-form">
+                    <form id="searchForm">
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Origen</label>
+                            <input type="text" name="origen" placeholder="Ciudad de origen" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Destino</label>
+                            <input type="text" name="destino" placeholder="Ciudad de destino" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Fecha</label>
+                            <input type="date" name="fecha" required>
+                        </div>
+                        <button type="submit" class="btn-search">
+                            <i class="fas fa-search"></i> Buscar Boletos
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>¿Por qué elegir BusTickets?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Viajes Seguros</h3>
+                        <p>Autobuses con los más altos estándares de seguridad</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Puntualidad</h3>
+                        <p>Horarios precisos y llegadas a tiempo</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-credit-card"></i>
+                        <h3>Pago Fácil</h3>
+                        <p>Múltiples formas de pago seguras</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-headset"></i>
+                        <h3>Soporte 24/7</h3>
+                        <p>Atención al cliente las 24 horas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3><i class="fas fa-bus"></i> BusTickets</h3>
+                <p>Tu mejor opción para viajar cómodo y seguro por todo el país.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4><i class="fas fa-info-circle"></i> Información</h4>
+                <ul>
+                    <li><a href="#about">Sobre Nosotros</a></li>
+                    <li><a href="#terms">Términos y Condiciones</a></li>
+                    <li><a href="#privacy">Política de Privacidad</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4><i class="fas fa-headset"></i> Soporte</h4>
+                <ul>
+                    <li><a href="#contact">Contacto</a></li>
+                    <li><a href="tel:+1234567890"><i class="fas fa-phone"></i> +123 456 7890</a></li>
+                    <li><a href="mailto:info@bustickets.com"><i class="fas fa-envelope"></i> info@bustickets.com</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> BusTickets. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+    
+    <!-- Modal de autenticación -->
+    <div class="auth-modal" id="authModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAuthModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h2>Acceder a tu cuenta</h2>
+                <p>Elige una opción para continuar</p>
+            </div>
+            <div class="auth-options">
+                <a href="login.html" class="auth-option-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <div>
+                        <div style="font-weight: 600;">Iniciar Sesión</div>
+                        <div style="font-size: 0.85rem; color: #4a5568;">Ya tengo una cuenta</div>
+                    </div>
+                </a>
+                <a href="register.html" class="auth-option-btn">
+                    <i class="fas fa-user-plus"></i>
+                    <div>
+                        <div style="font-weight: 600;">Crear Cuenta</div>
+                        <div style="font-size: 0.85rem; color: #4a5568;">Soy nuevo usuario</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        checkUserSession();
+    </script>
+</body>
+</html>
