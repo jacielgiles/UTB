@@ -84,7 +84,8 @@ function handleRegister(e) {
     const confirmPassword = form.querySelector('input[name="confirm_password"]').value;
     const terms = form.querySelector('input[name="terms"]').checked;
     const privacy = form.querySelector('input[name="privacy"]').checked;
-    const newsletter = form.querySelector('input[name="newsletter"]').checked;
+    const newsletter = form.querySelector('input[name="newsletter"]');
+    const newsletterValue = newsletter ? newsletter.checked : false;
     
     let errors = [];
     
@@ -147,41 +148,44 @@ function handleRegister(e) {
         telefono: telefono,
         fecha_nacimiento: fechaNacimiento,
         password_hash: btoa(password), // En producción usar bcrypt
-        acepta_newsletter: newsletter
+        acepta_newsletter: newsletterValue
     });
 }
 
 // Registrar usuario en la base de datos real
 async function registerUserInDatabase(userData) {
     try {
-        console.log('📡 Enviando datos a Neon API:', userData);
+        console.log('📡 Enviando datos a Netlify Functions:', userData);
         
-        const response = await fetch(`${API_BASE_URL}/users`, {
+        const requestData = {
+            action: 'register',
+            ...userData
+        };
+        
+        const response = await fetch(`${API_BASE_URL}/auth`, {
             method: 'POST',
             headers: getAuthHeaders(),
-            body: JSON.stringify(userData)
+            body: JSON.stringify(requestData)
         });
         
         console.log('📊 Status de respuesta:', response.status);
         
         if (response.ok) {
             const result = await response.json();
-            console.log('✅ Usuario registrado en la base de datos:', result);
-            showAuthSuccess('¡Cuenta creada exitosamente en la base de datos! Ya puedes iniciar sesión.');
+            console.log('✅ Usuario registrado:', result);
+            showAuthSuccess('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
             
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 2000);
         } else {
-            const errorText = await response.text();
-            console.error('❌ Error de la API:', errorText);
+            const errorData = await response.json();
+            console.error('❌ Error de la API:', errorData);
             
-            if (response.status === 401) {
-                showAuthError('Error de autenticación. Verifica la configuración del API Key.');
-            } else if (response.status === 409) {
+            if (response.status === 409) {
                 showAuthError('Este email ya está registrado');
             } else if (response.status === 400) {
-                showAuthError('Datos inválidos. Verifica que todos los campos estén correctos.');
+                showAuthError(errorData.error || 'Datos inválidos');
             } else {
                 showAuthError('Error al crear la cuenta. Intenta nuevamente.');
             }
@@ -189,9 +193,8 @@ async function registerUserInDatabase(userData) {
         }
     } catch (error) {
         console.error('❌ Error de conexión:', error);
-        showAuthError('Error de conexión. Guardando localmente como respaldo...');
-        // Fallback a localStorage si no hay conexión
-        registerUserLocally(userData);
+        showAuthError('Error de conexión. Intenta nuevamente.');
+        resetAuthButton();
     }
 }
 

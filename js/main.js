@@ -365,7 +365,7 @@ async function testDatabaseConnection() {
         
         if (response.ok) {
             const data = await response.json();
-            console.log('✅ Base de datos conectada correctamente');
+            console.log('✅ Conexión exitosa');
             console.log('📋 Datos recibidos:', data);
             showDatabaseStatus(true, 'Conectada');
             
