@@ -27,7 +27,6 @@
 }
 
 .nav-logo img {
-    filter: drop-shadow(0 2px 4px rgba(6, 33, 9, 0.2));
     transition: transform 0.3s ease;
 }
 
@@ -36,17 +35,17 @@
 }
 
 .nav-link {
-    color: var(--verde-muy-oscuro) !important;
+    color: var(--verde-medio) !important;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--verde-medio) !important;
+    color: var(--verde-claro) !important;
 }
 
 .nav-link.active {
-    color: var(--verde-medio) !important;
+    color: var(--verde-claro) !important;
 }
 
 .user-icon-btn {
@@ -66,40 +65,72 @@
 
 .user-menu {
     background: var(--white);
-    border: 1px solid var(--verde-claro);
+    border: none;
     box-shadow: 0 4px 12px rgba(6, 33, 9, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem;
 }
 
 .user-name {
-    color: var(--verde-muy-oscuro);
+    color: var(--verde-medio);
     text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .user-name:hover {
-    color: var(--verde-medio);
+    color: var(--verde-claro);
+    background: var(--pale-green);
 }
 
 .btn-logout {
     color: var(--medium-gray);
     text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
 
 .btn-logout:hover {
-    color: var(--verde-medio);
+    color: var(--verde-claro);
+    background: var(--pale-green);
+}
+
+/* Iconos más grandes en el header */
+.nav-link i {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.user-icon-btn i {
+    font-size: 1.3rem;
+}
+
+.user-name i {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.btn-logout i {
+    font-size: 1.1rem;
+    margin-right: 0.5rem;
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--verde-muy-oscuro) 0%, var(--verde-medio) 100%);
+    background: linear-gradient(135deg, var(--verde-medio) 0%, var(--verde-claro) 100%);
     color: var(--white);
 }
 
 .hero h1 {
     color: var(--white);
+    text-shadow: none;
 }
 
 .hero p {
-    color: var(--light-gray);
+    color: var(--white);
+    opacity: 0.95;
 }
 
 /* Botones */
@@ -125,7 +156,7 @@
 }
 
 .features h2 {
-    color: var(--verde-muy-oscuro);
+    color: var(--verde-medio);
 }
 
 .feature-card {
@@ -146,7 +177,7 @@
 }
 
 .feature-card h3 {
-    color: var(--verde-muy-oscuro);
+    color: var(--verde-medio);
 }
 
 .feature-card p {
@@ -236,11 +267,11 @@
 .auth-card {
     background: var(--white);
     border: 2px solid var(--verde-claro);
-    box-shadow: 0 10px 30px rgba(6, 33, 9, 0.1);
+    box-shadow: 0 10px 30px rgba(105, 179, 76, 0.1);
 }
 
 .auth-header h2 {
-    color: var(--verde-muy-oscuro);
+    color: var(--verde-medio);
 }
 
 .auth-header p {
@@ -287,7 +318,7 @@
 
 /* Página de Perfil */
 .profile-header {
-    background: linear-gradient(135deg, var(--verde-muy-oscuro), var(--verde-medio));
+    background: linear-gradient(135deg, var(--verde-medio), var(--verde-claro));
 }
 
 .tab-button {
@@ -297,13 +328,13 @@
 
 .tab-button.active {
     background: var(--pale-green);
-    border-bottom-color: var(--verde-medio);
-    color: var(--verde-muy-oscuro);
+    border-bottom-color: var(--verde-claro);
+    color: var(--verde-medio);
 }
 
 .tab-button:hover {
     background: var(--light-gray);
-    color: var(--verde-medio);
+    color: var(--verde-claro);
 }
 
 .info-card {
@@ -316,7 +347,7 @@
 }
 
 .info-value {
-    color: var(--verde-muy-oscuro);
+    color: var(--verde-medio);
 }
 
 .trip-card {
@@ -331,7 +362,7 @@
 
 .status-completed {
     background: var(--pale-green);
-    color: var(--verde-muy-oscuro);
+    color: var(--verde-medio);
 }
 
 .status-upcoming {
