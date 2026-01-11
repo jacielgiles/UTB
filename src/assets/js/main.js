@@ -367,7 +367,6 @@ async function testDatabaseConnection() {
             const data = await response.json();
             console.log('✅ Conexión exitosa');
             console.log('📋 Datos recibidos:', data);
-            showDatabaseStatus(true, 'Conectada');
             
             // Verificar si la tabla users existe
             await checkUsersTable();
@@ -409,7 +408,6 @@ async function tryNeonRestAPI() {
             const data = await response.json();
             console.log('✅ Neon API funciona sin autenticación');
             console.log('📋 Datos:', data);
-            showDatabaseStatus(true, 'Neon API');
             return true;
         }
         
@@ -426,28 +424,22 @@ async function tryNeonRestAPI() {
             const data = await response.json();
             console.log('✅ Neon API funciona con token');
             console.log('📋 Datos:', data);
-            showDatabaseStatus(true, 'Neon API');
             return true;
         } else {
             const errorText = await response.text();
             console.log('❌ Error en Neon API:', errorText);
             
             if (errorText.includes('JWT') || errorText.includes('authentication')) {
-                showDatabaseStatus(false, 'Auth Requerida');
                 console.log('🔑 La API requiere autenticación válida');
                 console.log('💡 Solución: Usar el backend local (recomendado)');
             } else if (response.status === 404 && errorText.includes('relation "users" does not exist')) {
-                showDatabaseStatus(false, 'Tabla No Existe');
                 console.log('🗄️ La tabla users no existe en la base de datos');
                 console.log('💡 Solución: Crear la tabla usando el backend local');
-            } else {
-                showDatabaseStatus(false, 'Error API');
             }
             return false;
         }
     } catch (error) {
         console.error('❌ Error con Neon API:', error);
-        showDatabaseStatus(false, 'Sin Conexión');
         return false;
     }
 }
@@ -464,7 +456,6 @@ async function checkUsersTable() {
             const error = await response.json();
             if (error.error && error.error.includes('relation "users" does not exist')) {
                 console.log('⚠️ La tabla users no existe');
-                showDatabaseStatus(false, 'Tabla No Existe');
                 return false;
             }
         }
@@ -476,287 +467,32 @@ async function checkUsersTable() {
     }
 }
 
-// Mostrar estado de la base de datos con información específica
-function showDatabaseStatus(isConnected, message) {
-    // Remover indicador anterior
-    const existing = document.getElementById('db-status');
-    if (existing) existing.remove();
-    
-    const indicator = document.createElement('div');
-    indicator.id = 'db-status';
-    indicator.style.cssText = `
+// Función para mostrar notificaciones
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
         position: fixed;
-        top: 10px;
-        left: 10px;
-        padding: 8px 12px;
-        border-radius: 6px;
+        top: 20px;
+        right: 20px;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
         color: white;
-        font-size: 12px;
         font-weight: 600;
-        z-index: 10001;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        max-width: 200px;
-        ${isConnected ? 
-            'background: linear-gradient(135deg, #27ae60, #2ecc71);' : 
-            'background: linear-gradient(135deg, #e74c3c, #ec7063);'
-        }
+        z-index: 10000;
+        max-width: 300px;
+        animation: slideIn 0.3s ease;
+        ${type === 'success' ? 'background: #27ae60;' : 
+          type === 'error' ? 'background: #e74c3c;' : 
+          'background: #3498db;'}
     `;
     
-    const icon = isConnected ? 'database' : 'exclamation-triangle';
+    notification.textContent = message;
+    document.body.appendChild(notification);
     
-    indicator.innerHTML = `
-        <i class="fas fa-${icon}"></i>
-        <span>DB: ${message}</span>
-    `;
-    
-    // Click para mostrar ayuda específica
-    indicator.addEventListener('click', () => {
-        if (message === 'Tabla No Existe') {
-            showTableSetupHelp();
-        } else if (message.includes('JWT') || message.includes('Inválido')) {
-            showJWTHelp();
-        } else {
-            console.clear();
-            console.log('🔍 Ejecutando test detallado de base de datos...');
-            if (window.dbTest) {
-                window.dbTest.full();
-            } else {
-                testDatabaseConnection();
-            }
-        }
-    });
-    
-    document.body.appendChild(indicator);
-    
-    // Auto-remover después de 15 segundos si está conectada
-    if (isConnected) {
-        setTimeout(() => {
-            if (indicator.parentNode) {
-                indicator.style.opacity = '0';
-                setTimeout(() => indicator.remove(), 300);
-            }
-        }, 15000);
-    }
-}
-
-// Mostrar ayuda para configurar la tabla
-function showTableSetupHelp() {
-    const helpModal = document.createElement('div');
-    helpModal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        z-index: 10002;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    `;
-    
-    helpModal.innerHTML = `
-        <div style="
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 600px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 style="margin: 0; color: #1a365d;">🗄️ Configurar Base de Datos</h3>
-                <button onclick="this.closest('div').parentElement.remove()" style="
-                    background: none;
-                    border: none;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    color: #666;
-                ">×</button>
-            </div>
-            
-            <div style="color: #4a5568; line-height: 1.6;">
-                <p><strong>Problema:</strong> La tabla "users" no existe en tu base de datos.</p>
-                
-                <div style="background: #e6fffa; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid #38b2ac;">
-                    <strong>🚀 Solución Automática (Recomendada):</strong><br>
-                    Haz clic en el botón de abajo para crear la tabla automáticamente.
-                </div>
-                
-                <button onclick="setupDatabase()" style="
-                    background: #38b2ac;
-                    color: white;
-                    border: none;
-                    padding: 1rem 2rem;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    margin: 1rem 0;
-                    width: 100%;
-                    font-size: 1.1rem;
-                ">
-                    🔧 Configurar Base de Datos Automáticamente
-                </button>
-                
-                <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                    <strong>📋 Alternativa Manual:</strong><br>
-                    1. Ve a <a href="https://console.neon.tech" target="_blank" style="color: #2c5282;">console.neon.tech</a><br>
-                    2. Selecciona tu proyecto: <code>bitter-darkness-74926925</code><br>
-                    3. Ve a SQL Editor<br>
-                    4. Ejecuta el archivo <code>database/auto_setup.sql</code>
-                </div>
-                
-                <button onclick="window.open('https://console.neon.tech', '_blank')" style="
-                    background: #1a365d;
-                    color: white;
-                    border: none;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    margin-top: 1rem;
-                ">
-                    🌐 Ir a Neon Console
-                </button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(helpModal);
-    
-    // Cerrar al hacer clic fuera
-    helpModal.addEventListener('click', (e) => {
-        if (e.target === helpModal) {
-            helpModal.remove();
-        }
-    });
-}
-
-// Función para configurar la base de datos automáticamente
-async function setupDatabase() {
-    try {
-        console.log('🔧 Configurando base de datos automáticamente...');
-        
-        const response = await fetch(getApiUrl() + '/setup', {
-            method: 'POST',
-            headers: getAuthHeaders()
-        });
-        
-        if (response.ok) {
-            const result = await response.json();
-            console.log('✅ Base de datos configurada:', result);
-            
-            showNotification('¡Base de datos configurada exitosamente!', 'success');
-            
-            // Cerrar modal
-            const modal = document.querySelector('[style*="position: fixed"]');
-            if (modal) modal.remove();
-            
-            // Probar conexión nuevamente
-            setTimeout(() => {
-                testDatabaseConnection();
-            }, 1000);
-            
-        } else {
-            const error = await response.json();
-            console.error('❌ Error al configurar:', error);
-            showNotification('Error al configurar la base de datos: ' + error.error, 'error');
-        }
-    } catch (error) {
-        console.error('❌ Error de conexión:', error);
-        showNotification('Error de conexión. ¿Está ejecutándose el backend?', 'error');
-    }
-}
-
-// Hacer la función global
-window.setupDatabase = setupDatabase;
-
-// Mostrar ayuda para JWT
-function showJWTHelp() {
-    const helpModal = document.createElement('div');
-    helpModal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.7);
-        z-index: 10002;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-    `;
-    
-    helpModal.innerHTML = `
-        <div style="
-            background: white;
-            border-radius: 12px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-        ">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 style="margin: 0; color: #1a365d;">🔑 JWT Requerido</h3>
-                <button onclick="this.closest('div').parentElement.remove()" style="
-                    background: none;
-                    border: none;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    color: #666;
-                ">×</button>
-            </div>
-            
-            <div style="color: #4a5568; line-height: 1.6;">
-                <p><strong>Problema:</strong> El API key actual no es un JWT válido.</p>
-                
-                <p><strong>Solución:</strong></p>
-                <ol style="margin: 1rem 0; padding-left: 1.5rem;">
-                    <li>Ve a <a href="https://console.neon.tech" target="_blank" style="color: #2c5282;">console.neon.tech</a></li>
-                    <li>Selecciona tu proyecto: <code>bitter-darkness-74926925</code></li>
-                    <li>Ve a Settings → API Keys</li>
-                    <li>Crea un nuevo API Key</li>
-                    <li>Copia el JWT (se ve así: <code>eyJhbGci...</code>)</li>
-                    <li>Reemplázalo en <code>js/config.js</code></li>
-                </ol>
-                
-                <div style="background: #f7fafc; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                    <strong>💡 Mientras tanto:</strong><br>
-                    La aplicación funciona en modo desarrollo con datos simulados.
-                </div>
-                
-                <button onclick="window.open('https://console.neon.tech', '_blank')" style="
-                    background: #1a365d;
-                    color: white;
-                    border: none;
-                    padding: 0.75rem 1.5rem;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    margin-top: 1rem;
-                ">
-                    🚀 Ir a Neon Console
-                </button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(helpModal);
-    
-    // Cerrar al hacer clic fuera
-    helpModal.addEventListener('click', (e) => {
-        if (e.target === helpModal) {
-            helpModal.remove();
-        }
-    });
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
 }
 
 // Probar conexión automáticamente al cargar la página

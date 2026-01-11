@@ -43,7 +43,7 @@ const CONFIG = {
     
     // URLs de la aplicación
     URLS: {
-        HOME: 'index.html',
+        HOME: '../../index.html',
         LOGIN: 'login.html',
         REGISTER: 'register.html'
     }
