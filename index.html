@@ -210,7 +210,7 @@
         `;
         
         cleanupButton.addEventListener('click', async () => {
-            if (confirm('¿Estás seguro de que quieres limpiar los usuarios con hashes incorrectos?')) {
+            if (confirm('¿Estás seguro de que quieres eliminar TODOS los usuarios?')) {
                 try {
                     const response = await fetch('/cleanup', { method: 'POST' });
                     const result = await response.json();
@@ -221,7 +221,52 @@
             }
         });
         
+        // Agregar botón para probar hash
+        const testHashButton = document.createElement('button');
+        testHashButton.innerHTML = '<i class="fas fa-key"></i> Test Hash';
+        testHashButton.style.cssText = `
+            position: fixed;
+            bottom: 140px;
+            left: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            transition: all 0.3s ease;
+        `;
+        
+        testHashButton.addEventListener('click', () => {
+            const password = prompt('Ingresa una contraseña para probar el hash:');
+            if (password) {
+                // Simular la función de hash
+                function createPasswordHash(password) {
+                    let hash = 0;
+                    const str = password + 'bustickets_salt';
+                    
+                    for (let i = 0; i < str.length; i++) {
+                        const char = str.charCodeAt(i);
+                        hash = ((hash << 5) - hash) + char;
+                        hash = hash & hash;
+                    }
+                    
+                    const hashStr = Math.abs(hash).toString(16);
+                    return 'bt_' + hashStr.padStart(8, '0');
+                }
+                
+                const hash = createPasswordHash(password);
+                console.log(`Contraseña: "${password}"`);
+                console.log(`Hash generado: "${hash}"`);
+                alert(`Contraseña: "${password}"\nHash: "${hash}"`);
+            }
+        });
+        
         document.body.appendChild(cleanupButton);
+        document.body.appendChild(testHashButton);
     </script>
 </body>
 </html>

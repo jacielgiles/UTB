@@ -27,15 +27,21 @@ function initAuthForms() {
     }
 }
 
-// Función para generar hash de contraseña simple (para demo)
-function simpleHash(password) {
+// Función para generar hash de contraseña consistente
+function createPasswordHash(password) {
+    // Usar un hash simple pero consistente
     let hash = 0;
-    for (let i = 0; i < password.length; i++) {
-        const char = password.charCodeAt(i);
+    const str = password + 'bustickets_salt'; // Agregar salt
+    
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
         hash = hash & hash; // Convert to 32bit integer
     }
-    return Math.abs(hash).toString(16);
+    
+    // Convertir a string hexadecimal y asegurar longitud mínima
+    const hashStr = Math.abs(hash).toString(16);
+    return 'bt_' + hashStr.padStart(8, '0'); // Prefijo + hash de 8 dígitos mínimo
 }
 
 // Manejar login
@@ -61,14 +67,17 @@ function handleLogin(e) {
     // Intentar login con la base de datos
     loginUserInDatabase({
         email: email,
-        password_hash: simpleHash(password)
+        password_hash: createPasswordHash(password)
     });
 }
 
 // Login de usuario en la base de datos
 async function loginUserInDatabase(userData) {
     try {
-        console.log('📡 Intentando login:', { email: userData.email });
+        console.log('📡 Intentando login:', { 
+            email: userData.email, 
+            password_hash: userData.password_hash 
+        });
         
         const requestData = {
             action: 'login',
@@ -106,19 +115,19 @@ async function loginUserInDatabase(userData) {
             console.error('❌ Error de login:', errorData);
             
             if (response.status === 401) {
-                showAuthError('Email o contraseña incorrectos');
+                showAuthError('Email o contraseña incorrectos. Verifica tus datos.');
             } else if (response.status === 423) {
                 showAuthError('Usuario bloqueado temporalmente. Intenta más tarde.');
             } else if (response.status === 403) {
                 showAuthError('Usuario inactivo. Contacta al soporte.');
             } else {
-                showAuthError('Error al iniciar sesión. Intenta nuevamente.');
+                showAuthError('Error al iniciar sesión: ' + (errorData.error || 'Error desconocido'));
             }
             resetAuthButton();
         }
     } catch (error) {
         console.error('❌ Error de conexión:', error);
-        showAuthError('Error de conexión. Intenta nuevamente.');
+        showAuthError('Error de conexión. Verifica tu internet e intenta nuevamente.');
         resetAuthButton();
     }
 }
@@ -199,7 +208,7 @@ function handleRegister(e) {
         email: email,
         telefono: telefono,
         fecha_nacimiento: fechaNacimiento,
-        password_hash: simpleHash(password), // Usar hash simple en lugar de base64
+        password_hash: createPasswordHash(password), // Usar hash consistente
         acepta_newsletter: newsletterValue
     });
 }
@@ -207,7 +216,10 @@ function handleRegister(e) {
 // Registrar usuario en la base de datos real
 async function registerUserInDatabase(userData) {
     try {
-        console.log('📡 Enviando datos a Netlify Functions:', userData);
+        console.log('📡 Enviando datos de registro:', {
+            ...userData,
+            password_hash: userData.password_hash // Mostrar el hash generado
+        });
         
         const requestData = {
             action: 'register',
@@ -220,11 +232,11 @@ async function registerUserInDatabase(userData) {
             body: JSON.stringify(requestData)
         });
         
-        console.log('📊 Status de respuesta:', response.status);
+        console.log('📊 Status de registro:', response.status);
         
         if (response.ok) {
             const result = await response.json();
-            console.log('✅ Usuario registrado:', result);
+            console.log('✅ Usuario registrado exitosamente:', result);
             showAuthSuccess('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
             
             setTimeout(() => {
@@ -232,20 +244,20 @@ async function registerUserInDatabase(userData) {
             }, 2000);
         } else {
             const errorData = await response.json();
-            console.error('❌ Error de la API:', errorData);
+            console.error('❌ Error de registro:', errorData);
             
             if (response.status === 409) {
-                showAuthError('Este email ya está registrado');
+                showAuthError('Este email ya está registrado. Intenta con otro email.');
             } else if (response.status === 400) {
-                showAuthError(errorData.error || 'Datos inválidos');
+                showAuthError(errorData.error || 'Datos inválidos. Verifica todos los campos.');
             } else {
-                showAuthError('Error al crear la cuenta. Intenta nuevamente.');
+                showAuthError('Error al crear la cuenta: ' + (errorData.error || 'Error desconocido'));
             }
             resetAuthButton();
         }
     } catch (error) {
-        console.error('❌ Error de conexión:', error);
-        showAuthError('Error de conexión. Intenta nuevamente.');
+        console.error('❌ Error de conexión en registro:', error);
+        showAuthError('Error de conexión. Verifica tu internet e intenta nuevamente.');
         resetAuthButton();
     }
 }

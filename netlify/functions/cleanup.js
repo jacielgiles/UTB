@@ -29,19 +29,15 @@ exports.handler = async (event, context) => {
   try {
     await client.connect();
 
-    // Limpiar usuarios con hashes base64 (que empiezan con letras mayúsculas)
-    const result = await client.query(`
-      DELETE FROM users 
-      WHERE password_hash ~ '^[A-Z]' 
-      OR length(password_hash) < 6
-    `);
+    // Limpiar TODOS los usuarios para empezar limpio
+    const result = await client.query('DELETE FROM users');
 
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Base de datos limpiada',
+        message: 'Todos los usuarios eliminados - base de datos limpia',
         deleted_users: result.rowCount
       })
     };
