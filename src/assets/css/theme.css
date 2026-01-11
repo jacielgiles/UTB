@@ -1,43 +1,57 @@
-/* Tema de colores: Negro, Blanco y Verde Claro */
+/* Tema de colores: Blanco y Verdes Específicos */
 :root {
-    --primary-black: #1a1a1a;
-    --secondary-black: #2d2d2d;
-    --light-black: #404040;
-    --primary-green: #4ade80;
-    --light-green: #86efac;
-    --pale-green: #dcfce7;
+    --verde-muy-oscuro: #062109;
+    --verde-medio: #3F8C28;
+    --verde-claro: #69B34C;
     --white: #ffffff;
     --light-gray: #f8fafc;
     --medium-gray: #64748b;
     --dark-gray: #334155;
+    --pale-green: #f0f9ff;
 }
 
 /* Header y Navegación */
 .header {
-    background: var(--primary-black);
-    box-shadow: 0 2px 10px rgba(26, 26, 26, 0.1);
+    background: var(--white);
+    box-shadow: 0 4px 15px rgba(6, 33, 9, 0.15);
+    border-bottom: 3px solid var(--verde-claro);
+    padding: 0.5rem 0;
 }
 
 .navbar {
-    background: var(--primary-black);
+    background: var(--white);
+}
+
+.nav-container {
+    padding: 0.5rem 1rem;
+}
+
+.nav-logo img {
+    filter: drop-shadow(0 2px 4px rgba(6, 33, 9, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.nav-logo img:hover {
+    transform: scale(1.05);
 }
 
 .nav-link {
-    color: var(--white) !important;
+    color: var(--verde-muy-oscuro) !important;
+    font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--primary-green) !important;
+    color: var(--verde-medio) !important;
 }
 
 .nav-link.active {
-    color: var(--primary-green) !important;
+    color: var(--verde-medio) !important;
 }
 
 .user-icon-btn {
-    background: var(--primary-green);
-    color: var(--primary-black);
+    background: var(--verde-claro);
+    color: var(--white);
     border: none;
     padding: 0.75rem;
     border-radius: 50%;
@@ -46,23 +60,23 @@
 }
 
 .user-icon-btn:hover {
-    background: var(--light-green);
+    background: var(--verde-medio);
     transform: scale(1.05);
 }
 
 .user-menu {
     background: var(--white);
-    border: 1px solid var(--pale-green);
-    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.15);
+    border: 1px solid var(--verde-claro);
+    box-shadow: 0 4px 12px rgba(6, 33, 9, 0.15);
 }
 
 .user-name {
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
     text-decoration: none;
 }
 
 .user-name:hover {
-    color: var(--primary-green);
+    color: var(--verde-medio);
 }
 
 .btn-logout {
@@ -71,12 +85,12 @@
 }
 
 .btn-logout:hover {
-    color: var(--primary-green);
+    color: var(--verde-medio);
 }
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+    background: linear-gradient(135deg, var(--verde-muy-oscuro) 0%, var(--verde-medio) 100%);
     color: var(--white);
 }
 
@@ -90,8 +104,8 @@
 
 /* Botones */
 .btn-search {
-    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-    color: var(--primary-black);
+    background: linear-gradient(135deg, var(--verde-claro), var(--verde-medio));
+    color: var(--white);
     border: none;
     padding: 1rem 2rem;
     border-radius: 8px;
@@ -102,36 +116,37 @@
 
 .btn-search:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(74, 222, 128, 0.3);
+    box-shadow: 0 8px 25px rgba(105, 179, 76, 0.3);
 }
 
 /* Features Section */
 .features {
-    background: var(--light-gray);
+    background: var(--white);
 }
 
 .features h2 {
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
 }
 
 .feature-card {
     background: var(--white);
-    border: 1px solid var(--pale-green);
+    border: 2px solid var(--verde-claro);
     transition: all 0.3s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
-    border-color: var(--primary-green);
+    box-shadow: 0 10px 30px rgba(105, 179, 76, 0.2);
+    border-color: var(--verde-medio);
 }
 
 .feature-card i {
-    color: var(--primary-green);
+    color: var(--verde-medio);
+    font-size: 2.5rem;
 }
 
 .feature-card h3 {
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
 }
 
 .feature-card p {
@@ -140,7 +155,7 @@
 
 /* Footer */
 .footer {
-    background: var(--primary-black);
+    background: var(--verde-muy-oscuro);
     color: var(--white);
 }
 
@@ -154,26 +169,26 @@
 }
 
 .footer a:hover {
-    color: var(--primary-green);
+    color: var(--verde-claro);
 }
 
 .footer-bottom {
-    border-top: 1px solid var(--secondary-black);
+    border-top: 1px solid var(--verde-medio);
     color: var(--light-gray);
 }
 
 /* Modal de Autenticación */
 .auth-modal {
-    background: rgba(26, 26, 26, 0.8);
+    background: rgba(6, 33, 9, 0.8);
 }
 
 .modal-content {
     background: var(--white);
-    border: 1px solid var(--pale-green);
+    border: 2px solid var(--verde-claro);
 }
 
 .modal-header h2 {
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
 }
 
 .modal-header p {
@@ -182,31 +197,31 @@
 
 .auth-option-btn {
     background: var(--white);
-    border: 2px solid var(--pale-green);
-    color: var(--primary-black);
+    border: 2px solid var(--verde-claro);
+    color: var(--verde-muy-oscuro);
     transition: all 0.3s ease;
 }
 
 .auth-option-btn:hover {
-    border-color: var(--primary-green);
+    border-color: var(--verde-medio);
     background: var(--pale-green);
     transform: translateY(-2px);
 }
 
 .auth-option-btn i {
-    color: var(--primary-green);
+    color: var(--verde-medio);
 }
 
 /* Formularios */
 .search-form input, .search-form select {
-    border: 2px solid var(--pale-green);
+    border: 2px solid var(--verde-claro);
     transition: border-color 0.3s ease;
 }
 
 .search-form input:focus, .search-form select:focus {
-    border-color: var(--primary-green);
+    border-color: var(--verde-medio);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+    box-shadow: 0 0 0 3px rgba(105, 179, 76, 0.1);
 }
 
 .search-form label {
@@ -215,17 +230,17 @@
 
 /* Páginas de Autenticación */
 .auth-main {
-    background: linear-gradient(135deg, var(--light-gray) 0%, var(--pale-green) 100%);
+    background: linear-gradient(135deg, var(--white) 0%, var(--pale-green) 100%);
 }
 
 .auth-card {
     background: var(--white);
-    border: 1px solid var(--pale-green);
-    box-shadow: 0 10px 30px rgba(26, 26, 26, 0.1);
+    border: 2px solid var(--verde-claro);
+    box-shadow: 0 10px 30px rgba(6, 33, 9, 0.1);
 }
 
 .auth-header h2 {
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
 }
 
 .auth-header p {
@@ -233,18 +248,18 @@
 }
 
 .auth-form input {
-    border: 2px solid var(--pale-green);
+    border: 2px solid var(--verde-claro);
     transition: border-color 0.3s ease;
 }
 
 .auth-form input:focus {
-    border-color: var(--primary-green);
-    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+    border-color: var(--verde-medio);
+    box-shadow: 0 0 0 3px rgba(105, 179, 76, 0.1);
 }
 
 .btn-auth {
-    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-    color: var(--primary-black);
+    background: linear-gradient(135deg, var(--verde-claro), var(--verde-medio));
+    color: var(--white);
     border: none;
     padding: 1rem 2rem;
     border-radius: 8px;
@@ -255,7 +270,7 @@
 
 .btn-auth:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(74, 222, 128, 0.3);
+    box-shadow: 0 8px 25px rgba(105, 179, 76, 0.3);
 }
 
 .checkbox-label {
@@ -263,16 +278,16 @@
 }
 
 .auth-footer a {
-    color: var(--primary-green);
+    color: var(--verde-medio);
 }
 
 .auth-footer a:hover {
-    color: var(--light-green);
+    color: var(--verde-claro);
 }
 
 /* Página de Perfil */
 .profile-header {
-    background: linear-gradient(135deg, var(--primary-black), var(--secondary-black));
+    background: linear-gradient(135deg, var(--verde-muy-oscuro), var(--verde-medio));
 }
 
 .tab-button {
@@ -282,18 +297,18 @@
 
 .tab-button.active {
     background: var(--pale-green);
-    border-bottom-color: var(--primary-green);
-    color: var(--primary-black);
+    border-bottom-color: var(--verde-medio);
+    color: var(--verde-muy-oscuro);
 }
 
 .tab-button:hover {
     background: var(--light-gray);
-    color: var(--primary-green);
+    color: var(--verde-medio);
 }
 
 .info-card {
     background: var(--pale-green);
-    border-left-color: var(--primary-green);
+    border-left-color: var(--verde-medio);
 }
 
 .info-label {
@@ -301,57 +316,58 @@
 }
 
 .info-value {
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
 }
 
 .trip-card {
     background: var(--white);
-    border: 1px solid var(--pale-green);
+    border: 2px solid var(--verde-claro);
 }
 
 .trip-card:hover {
-    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2);
-    border-color: var(--primary-green);
+    box-shadow: 0 4px 12px rgba(105, 179, 76, 0.2);
+    border-color: var(--verde-medio);
 }
 
 .status-completed {
     background: var(--pale-green);
-    color: var(--primary-black);
+    color: var(--verde-muy-oscuro);
 }
 
 .status-upcoming {
-    background: var(--light-green);
-    color: var(--primary-black);
+    background: var(--verde-claro);
+    color: var(--white);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-    color: var(--primary-black);
+    background: linear-gradient(135deg, var(--verde-claro), var(--verde-medio));
+    color: var(--white);
 }
 
 .btn-primary:hover {
-    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+    box-shadow: 0 4px 12px rgba(105, 179, 76, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .nav-menu {
-        background: var(--primary-black);
+        background: var(--white);
+        border-top: 2px solid var(--verde-claro);
     }
     
     .hamburger span {
-        background: var(--white);
+        background: var(--verde-muy-oscuro);
     }
     
     .hamburger.active span:nth-child(1) {
-        background: var(--primary-green);
+        background: var(--verde-medio);
     }
     
     .hamburger.active span:nth-child(2) {
-        background: var(--primary-green);
+        background: var(--verde-medio);
     }
     
     .hamburger.active span:nth-child(3) {
-        background: var(--primary-green);
+        background: var(--verde-medio);
     }
 }
