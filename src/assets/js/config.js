@@ -11,7 +11,7 @@ const CONFIG = {
     
     // Configuración de la aplicación
     APP: {
-        NAME: 'UTB',
+        NAME: 'Transportes',
         VERSION: '1.0.0',
         ENVIRONMENT: window.location.hostname === 'localhost' ? 'development' : 'production'
     },

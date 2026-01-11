@@ -1,0 +1,357 @@
+/* Tema de colores: Negro, Blanco y Verde Claro */
+:root {
+    --primary-black: #1a1a1a;
+    --secondary-black: #2d2d2d;
+    --light-black: #404040;
+    --primary-green: #4ade80;
+    --light-green: #86efac;
+    --pale-green: #dcfce7;
+    --white: #ffffff;
+    --light-gray: #f8fafc;
+    --medium-gray: #64748b;
+    --dark-gray: #334155;
+}
+
+/* Header y Navegación */
+.header {
+    background: var(--primary-black);
+    box-shadow: 0 2px 10px rgba(26, 26, 26, 0.1);
+}
+
+.navbar {
+    background: var(--primary-black);
+}
+
+.nav-link {
+    color: var(--white) !important;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-green) !important;
+}
+
+.nav-link.active {
+    color: var(--primary-green) !important;
+}
+
+.user-icon-btn {
+    background: var(--primary-green);
+    color: var(--primary-black);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.user-icon-btn:hover {
+    background: var(--light-green);
+    transform: scale(1.05);
+}
+
+.user-menu {
+    background: var(--white);
+    border: 1px solid var(--pale-green);
+    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.15);
+}
+
+.user-name {
+    color: var(--primary-black);
+    text-decoration: none;
+}
+
+.user-name:hover {
+    color: var(--primary-green);
+}
+
+.btn-logout {
+    color: var(--medium-gray);
+    text-decoration: none;
+}
+
+.btn-logout:hover {
+    color: var(--primary-green);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--primary-black) 0%, var(--secondary-black) 100%);
+    color: var(--white);
+}
+
+.hero h1 {
+    color: var(--white);
+}
+
+.hero p {
+    color: var(--light-gray);
+}
+
+/* Botones */
+.btn-search {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: var(--primary-black);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 222, 128, 0.3);
+}
+
+/* Features Section */
+.features {
+    background: var(--light-gray);
+}
+
+.features h2 {
+    color: var(--primary-black);
+}
+
+.feature-card {
+    background: var(--white);
+    border: 1px solid var(--pale-green);
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(74, 222, 128, 0.2);
+    border-color: var(--primary-green);
+}
+
+.feature-card i {
+    color: var(--primary-green);
+}
+
+.feature-card h3 {
+    color: var(--primary-black);
+}
+
+.feature-card p {
+    color: var(--dark-gray);
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-black);
+    color: var(--white);
+}
+
+.footer h3, .footer h4 {
+    color: var(--white);
+}
+
+.footer a {
+    color: var(--light-gray);
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--primary-green);
+}
+
+.footer-bottom {
+    border-top: 1px solid var(--secondary-black);
+    color: var(--light-gray);
+}
+
+/* Modal de Autenticación */
+.auth-modal {
+    background: rgba(26, 26, 26, 0.8);
+}
+
+.modal-content {
+    background: var(--white);
+    border: 1px solid var(--pale-green);
+}
+
+.modal-header h2 {
+    color: var(--primary-black);
+}
+
+.modal-header p {
+    color: var(--dark-gray);
+}
+
+.auth-option-btn {
+    background: var(--white);
+    border: 2px solid var(--pale-green);
+    color: var(--primary-black);
+    transition: all 0.3s ease;
+}
+
+.auth-option-btn:hover {
+    border-color: var(--primary-green);
+    background: var(--pale-green);
+    transform: translateY(-2px);
+}
+
+.auth-option-btn i {
+    color: var(--primary-green);
+}
+
+/* Formularios */
+.search-form input, .search-form select {
+    border: 2px solid var(--pale-green);
+    transition: border-color 0.3s ease;
+}
+
+.search-form input:focus, .search-form select:focus {
+    border-color: var(--primary-green);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+}
+
+.search-form label {
+    color: var(--white);
+}
+
+/* Páginas de Autenticación */
+.auth-main {
+    background: linear-gradient(135deg, var(--light-gray) 0%, var(--pale-green) 100%);
+}
+
+.auth-card {
+    background: var(--white);
+    border: 1px solid var(--pale-green);
+    box-shadow: 0 10px 30px rgba(26, 26, 26, 0.1);
+}
+
+.auth-header h2 {
+    color: var(--primary-black);
+}
+
+.auth-header p {
+    color: var(--dark-gray);
+}
+
+.auth-form input {
+    border: 2px solid var(--pale-green);
+    transition: border-color 0.3s ease;
+}
+
+.auth-form input:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+}
+
+.btn-auth {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: var(--primary-black);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 222, 128, 0.3);
+}
+
+.checkbox-label {
+    color: var(--dark-gray);
+}
+
+.auth-footer a {
+    color: var(--primary-green);
+}
+
+.auth-footer a:hover {
+    color: var(--light-green);
+}
+
+/* Página de Perfil */
+.profile-header {
+    background: linear-gradient(135deg, var(--primary-black), var(--secondary-black));
+}
+
+.tab-button {
+    color: var(--dark-gray);
+    transition: all 0.3s ease;
+}
+
+.tab-button.active {
+    background: var(--pale-green);
+    border-bottom-color: var(--primary-green);
+    color: var(--primary-black);
+}
+
+.tab-button:hover {
+    background: var(--light-gray);
+    color: var(--primary-green);
+}
+
+.info-card {
+    background: var(--pale-green);
+    border-left-color: var(--primary-green);
+}
+
+.info-label {
+    color: var(--dark-gray);
+}
+
+.info-value {
+    color: var(--primary-black);
+}
+
+.trip-card {
+    background: var(--white);
+    border: 1px solid var(--pale-green);
+}
+
+.trip-card:hover {
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2);
+    border-color: var(--primary-green);
+}
+
+.status-completed {
+    background: var(--pale-green);
+    color: var(--primary-black);
+}
+
+.status-upcoming {
+    background: var(--light-green);
+    color: var(--primary-black);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: var(--primary-black);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-menu {
+        background: var(--primary-black);
+    }
+    
+    .hamburger span {
+        background: var(--white);
+    }
+    
+    .hamburger.active span:nth-child(1) {
+        background: var(--primary-green);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+        background: var(--primary-green);
+    }
+    
+    .hamburger.active span:nth-child(3) {
+        background: var(--primary-green);
+    }
+}
