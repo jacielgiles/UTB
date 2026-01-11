@@ -11,13 +11,8 @@ function checkUserSession() {
     const user = localStorage.getItem('bustickets_user');
     const userMenu = document.getElementById('userMenu');
     const authButtons = document.getElementById('authButtons');
-    const userName = document.getElementById('userName');
     
-    if (user && userMenu && authButtons && userName) {
-        const userData = JSON.parse(user);
-        // Mostrar solo el primer nombre
-        const firstName = userData.nombre.split(' ')[0];
-        userName.textContent = firstName;
+    if (user && userMenu && authButtons) {
         userMenu.style.display = 'flex';
         authButtons.style.display = 'none';
     }

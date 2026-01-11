@@ -74,6 +74,24 @@
     gap: 1rem;
 }
 
+.user-profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--verde-medio);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+}
+
+.user-profile-link:hover {
+    color: var(--verde-claro);
+    background: transparent;
+}
+
 .user-name {
     color: var(--verde-medio);
     text-decoration: none;

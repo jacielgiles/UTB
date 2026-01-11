@@ -1,4 +1,13 @@
 /* Estilos para páginas de autenticación */
+
+:root {
+    --verde-muy-oscuro: #062109;
+    --verde-medio: #3F8C28;
+    --verde-claro: #69B34C;
+    --white: #ffffff;
+    --pale-green: #f0f9ff;
+}
+
 .auth-main {
     min-height: calc(100vh - 200px);
     display: flex;
@@ -35,7 +44,7 @@
 }
 
 .auth-header {
-    background: #1a365d;
+    background: var(--verde-medio);
     color: white;
     padding: 2rem;
     text-align: center;
@@ -72,7 +81,7 @@
     gap: 0.5rem;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #1a365d;
+    color: var(--verde-medio);
 }
 
 .form-group input {
@@ -87,9 +96,9 @@
 
 .form-group input:focus {
     outline: none;
-    border-color: #2c5282;
+    border-color: var(--verde-claro);
     background-color: white;
-    box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
+    box-shadow: 0 0 0 3px rgba(105, 179, 76, 0.1);
 }
 
 .form-options {
@@ -146,13 +155,13 @@
 }
 
 .forgot-link:hover {
-    color: #1a365d;
+    color: var(--verde-medio);
     text-decoration: underline;
 }
 
 .btn-auth {
     width: 100%;
-    background: #1a365d;
+    background: var(--verde-claro);
     color: white;
     border: none;
     padding: 1rem;
@@ -200,7 +209,7 @@
 }
 
 .auth-footer a:hover {
-    color: #1a365d;
+    color: var(--verde-medio);
     text-decoration: underline;
 }
 
