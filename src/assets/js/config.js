@@ -11,7 +11,7 @@ const CONFIG = {
     
     // Configuración de la aplicación
     APP: {
-        NAME: 'BusTickets',
+        NAME: 'UTB',
         VERSION: '1.0.0',
         ENVIRONMENT: window.location.hostname === 'localhost' ? 'development' : 'production'
     },
@@ -45,7 +45,8 @@ const CONFIG = {
     URLS: {
         HOME: '../../index.html',
         LOGIN: 'login.html',
-        REGISTER: 'register.html'
+        REGISTER: 'register.html',
+        PROFILE: 'profile.html'
     }
 };
 

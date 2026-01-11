@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BusTickets - Venta de Boletos de Autobús</title>
+    <title>UTB - Venta de Boletos de Autobús</title>
     <link rel="stylesheet" href="src/assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -13,8 +13,8 @@
             <div class="nav-container">
                 <div class="nav-logo">
                     <a href="index.html">
-                        <i class="fas fa-bus"></i>
-                        <span>BusTickets</span>
+                        <img src="src/assets/images/images/logo.jpeg" alt="UTB" style="height: 40px; width: auto; margin-right: 8px;">
+                        <span>UTB</span>
                     </a>
                 </div>
                 
@@ -35,18 +35,18 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#contacto" class="nav-link">
-                            <i class="fas fa-phone"></i> Contacto
+                        <a href="src/pages/profile.html" class="nav-link">
+                            <i class="fas fa-user-circle"></i> Mi Perfil
                         </a>
                     </li>
                 </ul>
 
                 <div class="nav-auth">
                     <div class="user-menu" id="userMenu" style="display: none;">
-                        <span class="user-name">
-                            <i class="fas fa-user"></i> 
+                        <a href="src/pages/profile.html" class="user-name">
+                            <i class="fas fa-user-circle"></i> 
                             <span id="userName"></span>
-                        </span>
+                        </a>
                         <a href="#" class="btn-logout" onclick="logout()">
                             <i class="fas fa-sign-out-alt"></i> Salir
                         </a>
@@ -70,8 +70,8 @@
     <main class="main-content">
         <section class="hero">
             <div class="hero-content">
-                <h1><i class="fas fa-bus"></i> Viaja Cómodo y Seguro</h1>
-                <p>Encuentra los mejores boletos de autobús para tu próximo destino</p>
+                <h1><i class="fas fa-bus"></i> Viaja Cómodo y Seguro con UTB</h1>
+                <p>Encuentra los mejores boletos de autobús para tu próximo destino. Conectamos ciudades con comodidad, seguridad y puntualidad.</p>
                 <div class="search-form">
                     <form id="searchForm">
                         <div class="form-group">
@@ -96,27 +96,37 @@
 
         <section class="features">
             <div class="container">
-                <h2>¿Por qué elegir BusTickets?</h2>
+                <h2>¿Por qué elegir UTB?</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <i class="fas fa-shield-alt"></i>
                         <h3>Viajes Seguros</h3>
-                        <p>Autobuses con los más altos estándares de seguridad</p>
+                        <p>Autobuses modernos con los más altos estándares de seguridad, GPS en tiempo real y conductores certificados</p>
                     </div>
                     <div class="feature-card">
                         <i class="fas fa-clock"></i>
-                        <h3>Puntualidad</h3>
-                        <p>Horarios precisos y llegadas a tiempo</p>
+                        <h3>Puntualidad Garantizada</h3>
+                        <p>Horarios precisos y llegadas a tiempo. Monitoreo constante de rutas para evitar retrasos</p>
                     </div>
                     <div class="feature-card">
                         <i class="fas fa-credit-card"></i>
-                        <h3>Pago Fácil</h3>
-                        <p>Múltiples formas de pago seguras</p>
+                        <h3>Pago Fácil y Seguro</h3>
+                        <p>Múltiples formas de pago: tarjetas, transferencias, efectivo. Transacciones 100% seguras</p>
                     </div>
                     <div class="feature-card">
                         <i class="fas fa-headset"></i>
                         <h3>Soporte 24/7</h3>
-                        <p>Atención al cliente las 24 horas</p>
+                        <p>Atención al cliente las 24 horas del día, los 7 días de la semana. Siempre estamos para ayudarte</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-wifi"></i>
+                        <h3>WiFi Gratuito</h3>
+                        <p>Internet gratuito en todos nuestros autobuses para que puedas trabajar o entretenerte durante el viaje</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h3>Rutas Extensas</h3>
+                        <p>Conectamos las principales ciudades del país con rutas directas y conexiones convenientes</p>
                     </div>
                 </div>
             </div>
@@ -126,8 +136,8 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
-                <h3><i class="fas fa-bus"></i> BusTickets</h3>
-                <p>Tu mejor opción para viajar cómodo y seguro por todo el país.</p>
+                <h3><img src="src/assets/images/images/logo.jpeg" alt="UTB" style="height: 30px; width: auto; margin-right: 8px; vertical-align: middle;"> UTB</h3>
+                <p>Tu mejor opción para viajar cómodo y seguro por todo el país. Conectamos destinos, creamos experiencias.</p>
             </div>
             
             <div class="footer-section">
@@ -150,7 +160,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; <span id="currentYear"></span> BusTickets. Todos los derechos reservados.</p>
+            <p>&copy; <span id="currentYear"></span> UTB - Unión de Transportes de Boletos. Todos los derechos reservados.</p>
         </div>
     </footer>
     
@@ -189,67 +199,6 @@
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
         checkUserSession();
-        
-        // Agregar botón temporal para limpiar base de datos
-        const cleanupButton = document.createElement('button');
-        cleanupButton.innerHTML = '<i class="fas fa-broom"></i> Limpiar DB';
-        cleanupButton.style.cssText = `
-            position: fixed;
-            bottom: 80px;
-            left: 20px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
-            transition: all 0.3s ease;
-        `;
-        
-        cleanupButton.addEventListener('click', async () => {
-            if (confirm('¿Estás seguro de que quieres eliminar TODOS los usuarios?')) {
-                try {
-                    const response = await fetch('/cleanup', { method: 'POST' });
-                    const result = await response.json();
-                    alert(`Base de datos limpiada. Usuarios eliminados: ${result.deleted_users}`);
-                } catch (error) {
-                    alert('Error al limpiar base de datos: ' + error.message);
-                }
-            }
-        });
-        
-        // Agregar botón para probar contraseña
-        const testHashButton = document.createElement('button');
-        testHashButton.innerHTML = '<i class="fas fa-key"></i> Test Password';
-        testHashButton.style.cssText = `
-            position: fixed;
-            bottom: 140px;
-            left: 20px;
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
-            transition: all 0.3s ease;
-        `;
-        
-        testHashButton.addEventListener('click', () => {
-            const password = prompt('Ingresa una contraseña para probar:');
-            if (password) {
-                console.log(`Contraseña que se guardará: "${password}"`);
-                alert(`Contraseña que se guardará: "${password}"`);
-            }
-        });
-        
-        document.body.appendChild(cleanupButton);
-        document.body.appendChild(testHashButton);
     </script>
 </body>
 </html>
