@@ -84,15 +84,16 @@ CREATE TRIGGER check_user_login_attempts
     WHEN (NEW.intentos_login > OLD.intentos_login)
     EXECUTE FUNCTION check_login_attempts();
 
--- Insertar usuario de prueba con hash correcto
--- Contraseña: "test123" -> Hash: "bt_1a2b3c4d" (ejemplo)
+-- Insertar usuario de prueba con contraseña simple
+-- Email: test@bustickets.com
+-- Contraseña: test123
 INSERT INTO users (nombre, email, telefono, fecha_nacimiento, password_hash, acepta_newsletter) 
 VALUES (
     'Usuario Prueba',
     'test@bustickets.com',
     '5512345678',
     '1990-01-01',
-    'bt_1a2b3c4d',
+    'test123',
     false
 );
 
@@ -106,4 +107,4 @@ SELECT
 FROM users;
 
 -- Mensaje de confirmación
-SELECT 'Tabla users recreada exitosamente con hash consistente' AS resultado;
+SELECT 'Tabla users recreada - Usuario prueba: test@bustickets.com / test123' AS resultado;

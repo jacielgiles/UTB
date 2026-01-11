@@ -67,7 +67,7 @@ function handleLogin(e) {
     // Intentar login con la base de datos
     loginUserInDatabase({
         email: email,
-        password_hash: createPasswordHash(password)
+        password_hash: password // Usar contraseña directa, sin hash
     });
 }
 
@@ -208,7 +208,7 @@ function handleRegister(e) {
         email: email,
         telefono: telefono,
         fecha_nacimiento: fechaNacimiento,
-        password_hash: createPasswordHash(password), // Usar hash consistente
+        password_hash: password, // Guardar contraseña directa, sin hash
         acepta_newsletter: newsletterValue
     });
 }

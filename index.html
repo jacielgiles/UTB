@@ -221,9 +221,9 @@
             }
         });
         
-        // Agregar botón para probar hash
+        // Agregar botón para probar contraseña
         const testHashButton = document.createElement('button');
-        testHashButton.innerHTML = '<i class="fas fa-key"></i> Test Hash';
+        testHashButton.innerHTML = '<i class="fas fa-key"></i> Test Password';
         testHashButton.style.cssText = `
             position: fixed;
             bottom: 140px;
@@ -241,27 +241,10 @@
         `;
         
         testHashButton.addEventListener('click', () => {
-            const password = prompt('Ingresa una contraseña para probar el hash:');
+            const password = prompt('Ingresa una contraseña para probar:');
             if (password) {
-                // Simular la función de hash
-                function createPasswordHash(password) {
-                    let hash = 0;
-                    const str = password + 'bustickets_salt';
-                    
-                    for (let i = 0; i < str.length; i++) {
-                        const char = str.charCodeAt(i);
-                        hash = ((hash << 5) - hash) + char;
-                        hash = hash & hash;
-                    }
-                    
-                    const hashStr = Math.abs(hash).toString(16);
-                    return 'bt_' + hashStr.padStart(8, '0');
-                }
-                
-                const hash = createPasswordHash(password);
-                console.log(`Contraseña: "${password}"`);
-                console.log(`Hash generado: "${hash}"`);
-                alert(`Contraseña: "${password}"\nHash: "${hash}"`);
+                console.log(`Contraseña que se guardará: "${password}"`);
+                alert(`Contraseña que se guardará: "${password}"`);
             }
         });
         
