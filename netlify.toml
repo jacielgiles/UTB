@@ -10,3 +10,8 @@
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
+
+[[redirects]]
+  from = "/cleanup"
+  to = "/.netlify/functions/cleanup"
+  status = 200

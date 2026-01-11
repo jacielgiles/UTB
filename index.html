@@ -189,6 +189,39 @@
     <script>
         document.getElementById('currentYear').textContent = new Date().getFullYear();
         checkUserSession();
+        
+        // Agregar botón temporal para limpiar base de datos
+        const cleanupButton = document.createElement('button');
+        cleanupButton.innerHTML = '<i class="fas fa-broom"></i> Limpiar DB';
+        cleanupButton.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+            transition: all 0.3s ease;
+        `;
+        
+        cleanupButton.addEventListener('click', async () => {
+            if (confirm('¿Estás seguro de que quieres limpiar los usuarios con hashes incorrectos?')) {
+                try {
+                    const response = await fetch('/cleanup', { method: 'POST' });
+                    const result = await response.json();
+                    alert(`Base de datos limpiada. Usuarios eliminados: ${result.deleted_users}`);
+                } catch (error) {
+                    alert('Error al limpiar base de datos: ' + error.message);
+                }
+            }
+        });
+        
+        document.body.appendChild(cleanupButton);
     </script>
 </body>
 </html>
