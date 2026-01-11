@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="../assets/css/theme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --verde-muy-oscuro: #062109;
+            --verde-medio: #3F8C28;
+            --verde-claro: #69B34C;
+            --white: #ffffff;
+            --pale-green: #f0f9ff;
+        }
+        
         .profile-container {
             max-width: 1200px;
             margin: 2rem auto;
@@ -17,7 +25,7 @@
         }
         
         .profile-header {
-            background: linear-gradient(135deg, #1a365d, #2c5282);
+            background: linear-gradient(135deg, var(--verde-medio), var(--verde-claro));
             color: white;
             padding: 2rem;
             border-radius: 12px;
@@ -58,9 +66,9 @@
         }
         
         .tab-button.active {
-            background: #f8fafc;
-            border-bottom-color: #2c5282;
-            color: #2c5282;
+            background: var(--pale-green);
+            border-bottom-color: var(--verde-claro);
+            color: var(--verde-medio);
         }
         
         .tab-content {
@@ -86,7 +94,7 @@
             background: #f8fafc;
             padding: 1.5rem;
             border-radius: 8px;
-            border-left: 4px solid #2c5282;
+            border-left: 4px solid var(--verde-medio);
         }
         
         .info-label {
@@ -147,8 +155,8 @@
         }
         
         .status-upcoming {
-            background: #bee3f8;
-            color: #3182ce;
+            background: var(--verde-claro);
+            color: var(--white);
         }
         
         .status-cancelled {
@@ -204,12 +212,12 @@
         
         .form-group input:focus {
             outline: none;
-            border-color: #2c5282;
+            border-color: var(--verde-medio);
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #2c5282, #3182ce);
-            color: white;
+            background: linear-gradient(135deg, var(--verde-claro), var(--verde-medio));
+            color: var(--white);
             padding: 0.75rem 2rem;
             border: none;
             border-radius: 8px;
@@ -256,7 +264,7 @@
             <div class="nav-container">
                 <div class="nav-logo">
                     <a href="../../index.html">
-                        <img src="../assets/images/images/logo.jpeg" alt="Logo" style="height: 90px; width: auto;">
+                        <img src="../assets/images/images/logo.png" alt="Logo" style="height: 100px; width: auto;">
                     </a>
                 </div>
                 
@@ -278,7 +286,7 @@
                     </li>
                     <li class="nav-item">
                         <a href="profile.html" class="nav-link active">
-                            <i class="fas fa-user-circle"></i> Mi Perfil
+                            Mi Perfil
                         </a>
                     </li>
                 </ul>
@@ -452,7 +460,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
-                <h3><img src="../assets/images/images/logo.jpeg" alt="Logo" style="height: 70px; width: auto; margin-right: 8px; vertical-align: middle;"></h3>
+                <h3><img src="../assets/images/images/logo.png" alt="Logo" style="height: 80px; width: auto; margin-right: 8px; vertical-align: middle;"></h3>
                 <p>Tu mejor opción para viajar cómodo y seguro por todo el país.</p>
             </div>
         </div>
