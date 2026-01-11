@@ -15,7 +15,9 @@ function checkUserSession() {
     
     if (user && userMenu && authButtons && userName) {
         const userData = JSON.parse(user);
-        userName.textContent = userData.nombre;
+        // Mostrar solo el primer nombre
+        const firstName = userData.nombre.split(' ')[0];
+        userName.textContent = firstName;
         userMenu.style.display = 'flex';
         authButtons.style.display = 'none';
     }

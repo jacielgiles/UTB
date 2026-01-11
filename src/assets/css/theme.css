@@ -64,11 +64,14 @@
 }
 
 .user-menu {
-    background: var(--white);
+    background: transparent;
     border: none;
-    box-shadow: 0 4px 12px rgba(6, 33, 9, 0.15);
+    box-shadow: none;
     border-radius: 8px;
     padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .user-name {
@@ -77,24 +80,30 @@
     padding: 0.5rem 1rem;
     border-radius: 6px;
     transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .user-name:hover {
     color: var(--verde-claro);
-    background: var(--pale-green);
+    background: transparent;
 }
 
 .btn-logout {
-    color: var(--medium-gray);
+    color: var(--verde-medio);
     text-decoration: none;
     padding: 0.5rem 1rem;
     border-radius: 6px;
     transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .btn-logout:hover {
     color: var(--verde-claro);
-    background: var(--pale-green);
+    background: transparent;
 }
 
 /* Iconos más grandes en el header */

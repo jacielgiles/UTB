@@ -262,12 +262,6 @@
     <header class="header">
         <nav class="navbar">
             <div class="nav-container">
-                <div class="nav-logo">
-                    <a href="../../index.html">
-                        <img src="../assets/images/images/logo.png" alt="Logo" style="height: 100px; width: auto;">
-                    </a>
-                </div>
-                
                 <ul class="nav-menu">
                     <li class="nav-item">
                         <a href="../../index.html" class="nav-link">
@@ -285,8 +279,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="profile.html" class="nav-link active">
-                            Mi Perfil
+                        <a href="#contacto" class="nav-link">
+                            <i class="fas fa-phone"></i> Contacto
                         </a>
                     </li>
                 </ul>
@@ -490,15 +484,19 @@
             const user = checkUserAuth();
             if (!user) return;
             
-            document.getElementById('userName').textContent = user.nombre;
             document.getElementById('profileName').textContent = user.nombre;
             document.getElementById('userFullName').textContent = user.nombre;
             document.getElementById('userEmail').textContent = user.email;
             
+            // Datos reales del usuario desde localStorage o API
+            const userData = JSON.parse(localStorage.getItem('bustickets_user'));
+            if (userData) {
+                document.getElementById('userMemberSince').textContent = new Date(userData.loginTime).toLocaleDateString('es-ES');
+            }
+            
             // Simular datos adicionales (en producción vendrían de la API)
             document.getElementById('userPhone').textContent = '55 1234 5678';
             document.getElementById('userBirthDate').textContent = '15 de Marzo, 1990';
-            document.getElementById('userMemberSince').textContent = new Date(user.loginTime).toLocaleDateString('es-ES');
             document.getElementById('userTripsCount').textContent = '2';
         }
         
